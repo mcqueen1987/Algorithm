@@ -1,0 +1,44 @@
+
+https://zhuanlan.zhihu.com/p/31628866
+
+
+<?php
+
+/**
+*/
+function goldDigger($n=5, $w=10, $g=array(), $p=array()){
+	if($n<1 || $w<1) return 0;
+	$preArr = array();
+	$ret = array();
+
+	for($i=0;$i<$w;$i++){
+		if($i+1<$p[0]){
+			$preArr[$i]=0;
+		}else{
+			$preArr[$i]=$g[0];
+		}
+	}
+	$ret[] = $preArr;
+	echo json_encode($preArr)."\n";
+
+	for($j=1;$j<$n;$j++){ // gold mine
+		for($k=0;$k<$w;$k++){ // workers
+			if($k+1<=$p[$j]){
+				$ret[$k] = $preArr[$k];
+			}else{
+				$ret[$k] = max($preArr[$k], $preArr[$k-$p[$j]] + $g[$j]);
+			}
+		}
+		$preArr = $ret;
+		echo json_encode($ret)."\n";
+	}
+	return $ret;
+
+}
+
+$g = array("400", "500", "200", "200", "350");
+$p = array("5", "5", "3", "3", "3");
+$ret = goldDigger(5, 10, $g, $p);
+// echo json_encode($ret);
+
+?>
